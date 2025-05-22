@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gök&AR Web Tasarım</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Genel Ayarlar */
+        :root {
+            --primary-bg: #0a0a0a; /* Koyu arka plan */
+            --secondary-bg: #1a1a1a; /* Kartlar ve bölümler için biraz daha açık arka plan */
+            --text-color: #f0f0f0; /* Açık metin rengi */
+            --accent-color: #007bff; /* Vurgu rengi (mavi) */
+            --whatsapp-color: #25D366; /* WhatsApp yeşili */
+            --border-radius: 12px; /* Köşe yuvarlama */
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.3);
+            --shadow-dark: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            font-family: 'Lora', serif; /* Gövde metni için Lora fontu */
+            overflow-x: hidden;
+            cursor: none; /* Varsayılan imleci tamamen gizle */
+            -webkit-font-smoothing: antialiased; /* Metin yumuşatma */
+            -moz-osx-font-smoothing: grayscale; /* Metin yumuşatma */
+        }
+
+        /* Etkileşimli öğelerde de varsayılan imleci gizle (ekstra güvenlik) */
+        a, button, .price-card {
+            cursor: none !important; /* !important ile öncelik sağlandı */
+        }
+
+        h1, h2, .price-title {
+            font-family: 'Playfair Display', serif; /* Başlıklar için Playfair Display fontu */
+        }
+
+        a {
+            color: var(--accent-color); /* Link rengi vurgu rengi yapıldı */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #fff; /* Hover'da beyaza döndü */
+        }
+
+        /* Özel Yuvarlak Cursor */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px; /* Başlangıçta küçük bir çember */
+            height: 20px; /* Başlangıçta küçük bir çember */
+            background-color: transparent; /* İçini boşalt */
+            border: 2px solid var(--text-color); /* Beyaz kenarlık */
+            border-radius: 50%;
+            pointer-events: none; /* İmlecin tıklama olaylarını engellemesini sağlar */
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease, background-color 0.3s ease, border-color 0.3s ease, border 0.3s ease, mix-blend-mode 0.3s ease; /* Geçiş efektleri */
+            mix-blend-mode: difference; /* Arka planla karışma efekti */
+            z-index: 10000;
+            will-change: transform, background-color, width, height, border-color, border, mix-blend-mode; /* Performans optimizasyonu */
+        }
+
+        /* Etkileşimli öğelerin üzerine gelindiğinde imleç küçük, içi dolu bir nokta olsun */
+        a:hover ~ #custom-cursor,
+        button:hover ~ #custom-cursor,
+        .price-card:hover ~ #custom-cursor {
+            width: 16px; /* Hover'da biraz daha büyük bir nokta */
+            height: 16px; /* Hover'da biraz daha büyük bir nokta */
+            background-color: var(--accent-color); /* İçini vurgu rengiyle doldur */
+            border: none; /* Kenarlık olmasın */
+            transform: translate(-50%, -50%); /* Ölçeklendirme kaldırıldı, boyut değişimi kullanıldı */
+            mix-blend-mode: normal; /* Karışım modunu normale çevir */
+        }
+
+        /* Navigasyon Çubuğu */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Hafif şeffaf arka plan */
+            padding: 15px 20px;
+            z-index: 9999;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            justify-content: center; /* Ortalandı */
+            align-items: center;
+            backdrop-filter: blur(5px); /* Hafif blur efekti */
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 40px; /* Menü öğeleri arası boşluk artırıldı */
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Sayfa düzeni */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px 20px; /* Navigasyon için üstten boşluk */
+            text-align: center;
+            position: relative; /* Parallax veya diğer efektler için */
+        }
+
+        /* Giriş animasyonu */
+        #intro {
+            background-color: var(--primary-bg);
+            position: relative;
+            overflow: hidden;
+            padding-top: 100px; /* Navigasyon çubuğu için ekstra boşluk */
+        }
+
+        #intro img {
+            max-width: 280px; /* Logo boyutu büyütüldü */
+            width: 45vw; /* Mobil uyumluluk için */
+            user-select: none;
+            opacity: 0;
+            animation: fadeInScale 1.8s ease forwards; /* Animasyon süresi kısaltıldı */
+            animation-delay: 0.3s; /* Animasyon gecikmesi kısaltıldı */
+            filter: brightness(1.1) contrast(1.1); /* Hafif parlaklık ve kontrast */
+            margin-bottom: 25px; /* Başlık için boşluk */
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #intro h1 {
+            font-size: 3.5rem; /* Başlık boyutu büyütüldü */
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInSlideUp 1.5s ease forwards;
+            animation-delay: 0.8s;
+            background: linear-gradient(90deg, #fff, var(--accent-color)); /* Gradyan metin */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #intro p.slogan {
+            font-size: 1.4rem; /* Slogan boyutu artırıldı */
+            font-weight: 500;
+            color: #ccc;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInSlideUp 1.5s ease forwards;
+            animation-delay: 1.2s;
+        }
+
+        @keyframes fadeInSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Fiyatlandırma bölümü */
+        #pricing {
+            background-color: var(--secondary-bg);
+            padding-top: 80px; /* Navigasyon için boşluk */
+            padding-bottom: 60px;
+        }
+
+        #pricing h2 {
+            font-size: 3.8rem; /* Başlık boyutu büyütüldü */
+            margin-bottom: 50px; /* Boşluk artırıldı */
+            letter-spacing: 3px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--accent-color), #fff); /* Gradyan başlık */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px; /* Kartlar arası boşluk artırıldı */
+            justify-content: center;
+            max-width: 1000px; /* Maksimum genişlik artırıldı */
+            width: 90%; /* Responsive genişlik */
+        }
+
+        .price-card {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d); /* Hafif gradyan arka plan */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Hafif kenarlık */
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            width: 320px; /* Kart genişliği artırıldı */
+            padding: 35px 25px; /* İç boşluk artırıldı */
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease; /* Geçişlere background da eklendi */
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* İçeriği dikeyde yaydı */
+            opacity: 0; /* Başlangıçta gizli */
+            transform: translateY(30px) scale(0.95); /* Başlangıçta biraz aşağıda ve küçük */
+            animation: fadeInUpScale 1s ease forwards; /* Yeni giriş animasyonu */
+        }
+
+        /* Her kart için gecikmeli animasyon */
+        .price-card:nth-child(1) { animation-delay: 0.2s; }
+        .price-card:nth-child(2) { animation-delay: 0.4s; }
+        .price-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUpScale {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .price-card:hover {
+            transform: translateY(-15px) scale(1.03) skewX(-1deg); /* Daha belirgin hover efekti ve hafif eğim */
+            box-shadow: 0 0 40px rgba(0, 123, 255, 0.8); /* Vurgu rengiyle parlak gölge */
+            border-color: var(--accent-color); /* Hover'da vurgu rengi kenarlık */
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a); /* Hover'da daha belirgin gradyan */
+        }
+
+        .price-title {
+            font-weight: 800; /* Kalınlık artırıldı */
+            font-size: 2rem; /* Boyut artırıldı */
+            margin-bottom: 15px;
+            letter-spacing: 1.5px;
+            color: var(--accent-color); /* Başlık rengi vurgu rengi */
+        }
+
+        .price-amount {
+            font-weight: 700;
+            font-size: 2.2rem; /* Boyut artırıldı */
+            color: var(--text-color);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .price-amount::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .price-features {
+            list-style: none; /* Varsayılan list stilini kaldırdık */
+            margin-bottom: 30px; /* Boşluk artırıldı */
+            text-align: left;
+            color: #bbb; /* Daha açık gri */
+            font-weight: 400; /* Normal ağırlık */
+            font-size: 1.05rem; /* Boyut hafif artırıldı */
+            flex-grow: 1; /* Özellik listesinin boşluğu doldurmasını sağlar */
+            line-height: 1.6; /* Satır yüksekliği artırıldı */
+        }
+
+        .price-features li {
+            margin-bottom: 8px; /* Liste öğeleri arası boşluk azaltıldı */
+            padding-left: 0; /* Nokta için boşluk kaldırıldı */
+            text-indent: 0; /* Metin normal hizalandı */
+            position: relative;
+            word-wrap: break-word; /* Uzun kelimelerin kırılmasını sağlar */
+            overflow-wrap: break-word; /* Daha modern tarayıcılar için */
+        }
+
+        .price-features li::before {
+            content: none; /* Nokta tamamen kaldırıldı */
+        }
+
+        .whatsapp-btn {
+            background-color: var(--whatsapp-color);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 14px 30px; /* Buton boyutu artırıldı */
+            font-weight: 700;
+            font-size: 1.1rem; /* Font boyutu artırıldı */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            text-align: center;
+            display: inline-block;
+            user-select: none;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); /* Gölge eklendi */
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1ebe5d; /* Daha koyu yeşil */
+            transform: translateY(-3px); /* Hafif yukarı hareket */
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6); /* Daha belirgin gölge */
+        }
+
+        /* İletişim Bölümü */
+        #contact {
+            background-color: var(--primary-bg);
+            padding: 80px 20px 60px; /* Navigasyon için boşluk */
+            font-weight: 400;
+        }
+
+        #contact h2 {
+            font-size: 3.8rem; /* Başlık boyutu büyütüldü */
+            margin-bottom: 40px; /* Boşluk artırıldı */
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #fff, var(--accent-color)); /* Gradyan başlık */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #contact p {
+            margin-bottom: 12px; /* Boşluk artırıldı */
+            font-size: 1.2rem; /* Font boyutu artırıldı */
+            color: #ccc;
+        }
+
+        #contact a {
+            color: var(--accent-color); /* Link rengi vurgu rengi */
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        #contact a:hover {
+            color: #fff; /* Hover'da beyaz */
+        }
+
+        /* Sosyal Medya İkonları */
+        .social-icons {
+            margin-top: 40px; /* Boşluk artırıldı */
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin: 0 15px; /* Boşluk artırıldı */
+            color: var(--text-color);
+            transition: transform 0.3s ease, color 0.3s ease;
+            font-size: 2.5rem; /* İkon boyutu artırıldı */
+            user-select: none;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent-color); /* Hover'da vurgu rengi */
+            transform: translateY(-5px); /* Hafif yukarı hareket */
+        }
+
+        /* Instagram SVG ikon */
+        .instagram-icon {
+            width: 38px; /* Boyut artırıldı */
+            height: 38px; /* Boyut artırıldı */
+            fill: var(--text-color);
+            vertical-align: middle;
+            transition: fill 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons a:hover .instagram-icon {
+            fill: var(--accent-color); /* Hover'da vurgu rengi */
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Tasarım */
+
+        /* Büyük Ekranlar (1200px ve üzeri) - Varsayılan stiller zaten bu aralık için iyi */
+
+        /* Masaüstü ve Büyük Tabletler (992px - 1199px) */
+        @media (max-width: 1199px) {
+            #intro h1 {
+                font-size: 3.2rem;
+            }
+            #intro p.slogan {
+                font-size: 1.3rem;
+            }
+            #pricing h2, #contact h2 {
+                font-size: 3.5rem;
+            }
+            .price-cards {
+                gap: 40px;
+                max-width: 900px;
+            }
+            .price-card {
+                width: 300px;
+            }
+        }
+
+        /* Tabletler (768px - 991px) */
+        @media (max-width: 991px) {
+            nav ul {
+                gap: 30px;
+            }
+            nav ul li a {
+                font-size: 1rem;
+            }
+            #intro h1 {
+                font-size: 2.8rem;
+                letter-spacing: 2px;
+            }
+            #intro p.slogan {
+                font-size: 1.1rem;
+            }
+            #intro img {
+                max-width: 250px;
+                width: 40vw;
+            }
+            #pricing h2, #contact h2 {
+                font-size: 3rem;
+                margin-bottom: 40px;
+            }
+            .price-cards {
+                gap: 30px;
+                max-width: 650px; /* İki kart yan yana sığsın */
+            }
+            .price-card {
+                width: 300px;
+                padding: 30px 20px;
+            }
+            .price-title {
+                font-size: 1.8rem;
+            }
+            .price-amount {
+                font-size: 2rem;
+            }
+            .price-features {
+                font-size: 1rem;
+            }
+            .whatsapp-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            #contact p {
+                font-size: 1.1rem;
+            }
+            .social-icons a {
+                font-size: 2.2rem;
+            }
+            .instagram-icon {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        /* Küçük Tabletler ve Büyük Telefonlar (576px - 767px) */
+        @media (max-width: 767px) {
+            nav {
+                padding: 12px 15px;
+            }
+            nav ul {
+                gap: 20px;
+            }
+            nav ul li a {
+                font-size: 0.95rem;
+            }
+            section {
+                padding: 60px 15px 20px; /* Navigasyon için üstten boşluk azaltıldı */
+            }
+            #intro {
+                padding-top: 80px;
+            }
+            #intro h1 {
+                font-size: 2.2rem;
+                letter-spacing: 1.5px;
+            }
+            #intro p.slogan {
+                font-size: 1rem;
+                margin-bottom: 25px;
+            }
+            #intro img {
+                max-width: 200px;
+                width: 50vw;
+            }
+            #pricing h2, #contact h2 {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+                letter-spacing: 1.5px;
+            }
+            .price-cards {
+                flex-direction: column; /* Kartlar alt alta sıralandı */
+                align-items: center;
+                gap: 25px;
+                width: 95%;
+            }
+            .price-card {
+                width: 100%; /* Tam genişlik */
+                max-width: 380px; /* Maksimum genişlik belirlendi */
+                padding: 25px 18px;
+            }
+            .price-title {
+                font-size: 1.6rem;
+            }
+            .price-amount {
+                font-size: 1.8rem;
+            }
+            .price-features {
+                font-size: 0.95rem;
+            }
+            .whatsapp-btn {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+            #contact p {
+                font-size: 1rem;
+            }
+            .social-icons {
+                margin-top: 30px;
+            }
+            .social-icons a {
+                font-size: 2rem;
+                margin: 0 10px;
+            }
+            .instagram-icon {
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        /* Telefonlar (575px ve altı) */
+        @media (max-width: 575px) {
+            nav ul {
+                gap: 15px;
+            }
+            nav ul li a {
+                font-size: 0.85rem;
+            }
+            #intro h1 {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+            #intro p.slogan {
+                font-size: 0.9rem;
+                padding: 0 10px;
+            }
+            #intro img {
+                max-width: 180px;
+                width: 60vw;
+            }
+            #pricing h2, #contact h2 {
+                font-size: 2rem;
+                letter-spacing: 1px;
+            }
+            .price-card {
+                padding: 20px 15px;
+            }
+            .price-title {
+                font-size: 1.4rem;
+            }
+            .price-amount {
+                font-size: 1.6rem;
+            }
+            .price-features {
+                font-size: 0.9rem;
+            }
+            .whatsapp-btn {
+                padding: 8px 18px;
+                font-size: 0.9rem;
+            }
+            #contact p {
+                font-size: 0.9rem;
+            }
+            .social-icons a {
+                font-size: 1.8rem;
+            }
+            .instagram-icon {
+                width: 28px;
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <nav>
+        <ul>
+            <li><a href="#intro">Anasayfa</a></li>
+            <li><a href="#pricing">Fiyatlandırma</a></li>
+            <li><a href="#contact">İletişim</a></li>
+        </ul>
+    </nav>
+
+    <section id="intro">
+        <img src="https://i.hizliresim.com/f4vqxrc.png" alt="Gök&AR Logo" />
+        <h1>Gök&AR Web Tasarım</h1>
+        <p class="slogan">Dijital Ruhunuzu Yaratıyoruz , Beden Olmaya Hazır mısınız ?.</p>
+        <div class="social-icons">
+            <a href="https://instagram.com/gokberk_ucr" target="_blank" aria-label="Instagram">
+                <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+                    <path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.53 3.03a1.03 1.03 0 11-2.06 0 1.03 1.03 0 012.06 0zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <h2>Fiyatlandırma</h2>
+        <div class="price-cards">
+            <div class="price-card" onclick="openWhatsApp('Başlangıç Paketi - 3500₺')">
+                <div class="price-title">Başlangıç Paketi</div>
+                <div class="price-amount">₺3500</div>
+                <ul class="price-features">
+                    <li>5 sayfa web sitesi</li>
+                    <li>Mobil uyumlu tasarım</li>
+                    <li>Temel SEO optimizasyonu</li>
+                    <li>1 ay destek</li>
+                    <li>İletişim Formu</li>
+                </ul>
+                <button class="whatsapp-btn" onclick="event.stopPropagation(); openWhatsApp('Başlangıç Paketi - 3500₺')">WhatsApp'tan Fiyat Al</button>
+            </div>
+
+            <div class="price-card" onclick="openWhatsApp('Profesyonel Paket - 7500₺')">
+                <div class="price-title">Profesyonel Paket</div>
+                <div class="price-amount">₺7500</div>
+                <ul class="price-features">
+                    <li>10 sayfa özel tasarım</li>
+                    <li>İleri SEO ve analiz</li>
+                    <li>6 ay destek</li>
+                    <li>Sosyal medya entegrasyonu</li>
+                    <li>Yönetim Paneli</li>
+                </ul>
+                <button class="whatsapp-btn" onclick="event.stopPropagation(); openWhatsApp('Profesyonel Paket - 7500₺')">WhatsApp'tan Fiyat Al</button>
+            </div>
+
+            <div class="price-card" onclick="openWhatsApp('Kurumsal Paket - Özel Fiyat')">
+                <div class="price-title">Kurumsal Paket</div>
+                <div class="price-amount">Özel Fiyat</div>
+                <ul class="price-features">
+                    <li>Sınırsız sayfa</li>
+                    <li>Tamamen özel tasarım</li>
+                    <li>Gelişmiş SEO ve Pazarlama</li>
+                    <li>12 ay premium destek</li>
+                    <li>E-ticaret Entegrasyonu</li>
+                </ul>
+                <button class="whatsapp-btn" onclick="event.stopPropagation(); openWhatsApp('Kurumsal Paket - Özel Fiyat')">WhatsApp'tan Fiyat Al</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>İletişim</h2>
+        <p>Kahramanmaraş/Afşin</p>
+        <p>Telefon: <a href="tel:+905451571642">+90 545 157 16 42</a></p>
+        <p>Email: <a href="mailto:info@gokarwebmarka.com">info@gokarwebmarka.com</a></p>
+        <p>Instagram: <a href="https://instagram.com/gokberk_ucr" target="_blank">@gokberk_ucr</a></p>
+    </section>
+
+    <script>
+        // Cursor hareketi
+        const cursor = document.getElementById('custom-cursor');
+        window.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // WhatsApp yönlendirme fonksiyonu
+        function openWhatsApp(packageName) {
+            const phoneNumber = '905451571642'; // WhatsApp numarası (ülkesi ile birlikte)
+            const message = encodeURIComponent(`Merhaba, ${packageName} hakkında bilgi almak istiyorum.`);
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
