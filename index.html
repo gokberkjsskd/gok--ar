@@ -95,8 +95,7 @@
         .info-icon-btn:hover ~ #custom-cursor, /* Info icon eklendi */
         .notification-close-btn:hover ~ #custom-cursor, /* Bildirim kapatma butonu eklendi */
         .discount-input:hover ~ #custom-cursor, /* Yeni elementler eklendi */
-        .apply-discount-btn:hover ~ #custom-cursor, /* Yeni elementler eklendi */
-        #discount-trigger-area:hover ~ #custom-cursor { /* Gizli buton hover eklendi */
+        .apply-discount-btn:hover ~ #custom-cursor { /* Yeni elementler eklendi */
             width: 16px; /* Hover'da biraz daha büyük bir nokta */
             height: 16px; /* Hover'da biraz daha büyük bir nokta */
             background-color: var(--accent-color); /* İçini vurgu rengiyle doldur */
@@ -465,7 +464,7 @@
             margin-bottom: 40px; /* Boşluk artırıldı */
             font-weight: 900;
             letter-spacing: 3px;
-            background: linear-gradient(90deg, #fff, var(--accent-color)); /* Gradyan başlık */
+            background: linear-gradient(90deg, #fff, var(--accent-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -815,25 +814,6 @@
         .notification-close-btn:hover {
             color: #ccc;
         }
-
-        /* Gizli Tetikleyici Alanı */
-        #discount-trigger-area {
-            width: 100px; /* Küçük bir alan */
-            height: 50px;
-            background-color: transparent; /* Tekrar şeffaf yapıldı */
-            border: none; /* Kenarlık kaldırıldı */
-            cursor: pointer;
-            position: relative; /* Contact section'ın hemen üstünde olması için */
-            margin-top: 50px; /* İletişim bölümü ile arasında boşluk */
-            z-index: 1; /* Tıklanabilir olmasını sağla */
-            opacity: 0; /* Tekrar tamamen görünmez yapıldı */
-            pointer-events: auto; /* Tıklama olaylarını etkinleştir */
-            display: flex; /* İçindeki yazıyı ortalamak için (ama artık yazı yok) */
-            justify-content: center;
-            align-items: center;
-            color: transparent; /* Yazı rengini şeffaf yap */
-        }
-
 
         /* Responsive Tasarım */
 
@@ -1292,8 +1272,6 @@
         </div>
     </section>
 
-    <div id="discount-trigger-area"></div>
-
     <section id="contact">
         <h2>İletişim</h2>
         <p>Kahramanmaraş/Afşin</p>
@@ -1365,7 +1343,7 @@
             const generateNumberBtn = document.getElementById('generateNumberBtn');
             const randomNumberDisplay = document.getElementById('randomNumberDisplay');
             const sendCodeViaWhatsappBtn = document.getElementById('sendCodeViaWhatsapp');
-            const discountTriggerArea = document.getElementById('discount-trigger-area'); // Yeni: Gizli tetikleyici alan
+            // const discountTriggerArea = document.getElementById('discount-trigger-area'); // Gizli tetikleyici alanı KALDIRILDI
 
             // Fiyatlandırma bölümündeki indirim uygulama elementleri
             const discountCodeInput = document.getElementById('discountCodeInput'); 
@@ -1378,13 +1356,16 @@
             starterPriceElement.setAttribute('data-original-price', '₺4999');
             proPriceElement.setAttribute('data-original-price', '₺9999');
 
-            // --- BAŞLANGIÇ: Gizli Tetikleyici Alanı Mantığı ---
-            // QR kod kontrolünü kaldırdık, artık modal sadece bu alana tıklanınca açılacak
-            discountTriggerArea.addEventListener('click', () => {
+            // --- BAŞLANGIÇ: QR Kod URL Parametresi Kontrolü Geri Getirildi ---
+            const urlParams = new URLSearchParams(window.location.search);
+            // URL'de 'source=qr' parametresi varsa modalı göster
+            const isQRScanned = urlParams.get('source') === 'qr';
+
+            if (isQRScanned) {
                 introModal.classList.add('active');
                 document.body.style.overflow = 'hidden'; // Sayfa kaydırmasını engelle
-            });
-            // --- SON: Gizli Tetikleyici Alanı Mantığı ---
+            }
+            // --- SON: QR Kod URL Parametresi Kontrolü Geri Getirildi ---
 
 
             // Modalı kapatma butonu
