@@ -430,7 +430,7 @@
             content: none; /* Nokta tamamen kaldırıldı */
         }
 
-        .whatsapp-btn {
+        .whatsapp-btn { /* Bu sınıfın adı değişmeli, ancak CSS'i şimdilik böyle kalsın */
             background-color: var(--whatsapp-color);
             color: #fff;
             border: none;
@@ -446,7 +446,7 @@
             box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); /* Gölge eklendi */
         }
 
-        .whatsapp-btn:hover {
+        .whatsapp-btn:hover { /* Bu sınıfın adı değişmeli, ancak CSS'i şimdilik böyle kalsın */
             background-color: #1ebe5d; /* Daha koyu yeşil */
             transform: translateY(-3px); /* Hafif yukarı hareket */
             box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6); /* Daha belirgin gölge */
@@ -1223,7 +1223,7 @@
     <section id="pricing">
         <h2>Fiyatlandırma</h2>
         <div class="price-cards">
-            <div class="price-card" onclick="openWhatsApp('Başlangıç Paketi')">
+            <div class="price-card" onclick="openInstagram('Başlangıç Paketi')">
                 <div class="most-popular-badge">EN ÇOK ALINAN</div> <div class="price-title">Başlangıç Paketi</div>
                 <div class="price-amount" id="starter-price">₺4999</div>
                 <ul class="price-features">
@@ -1233,10 +1233,10 @@
                     <li>1 ay destek</li>
                     <li>İletişim Formu</li>
                 </ul>
-                <button class="whatsapp-btn" onclick="event.stopPropagation(); openWhatsApp('Başlangıç Paketi - Fiyat: ' + document.getElementById('starter-price').textContent)">WhatsApp'tan Fiyat Al</button>
+                <button class="whatsapp-btn" onclick="event.stopPropagation(); openInstagram('Başlangıç Paketi - Fiyat: ' + document.getElementById('starter-price').textContent)">İnstagramdan fiyat al</button>
             </div>
 
-            <div class="price-card" onclick="openWhatsApp('Profesyonel Paket')">
+            <div class="price-card" onclick="openInstagram('Profesyonel Paket')">
                 <div class="price-title">Profesyonel Paket</div>
                 <div class="price-amount" id="pro-price">₺9999</div>
                 <ul class="price-features">
@@ -1246,10 +1246,10 @@
                     <li>Sosyal medya entegrasyonu</li>
                     <li>Yönetim Paneli</li>
                 </ul>
-                <button class="whatsapp-btn" onclick="event.stopPropagation(); openWhatsApp('Profesyonel Paket - Fiyat: ' + document.getElementById('pro-price').textContent)">WhatsApp'tan Fiyat Al</button>
+                <button class="whatsapp-btn" onclick="event.stopPropagation(); openInstagram('Profesyonel Paket - Fiyat: ' + document.getElementById('pro-price').textContent)">İnstagramdan fiyat al</button>
             </div>
 
-            <div class="price-card" onclick="openWhatsApp('Kurumsal Paket - Özel Fiyat')">
+            <div class="price-card" onclick="openInstagram('Kurumsal Paket - Özel Fiyat')">
                 <div class="price-title">Kurumsal Paket</div>
                 <div class="price-amount">Özel Fiyat</div>
                 <ul class="price-features">
@@ -1259,7 +1259,7 @@
                     <li>12 ay premium destek</li>
                     <li>E-ticaret Entegrasyonu</li>
                 </ul>
-                <button class="whatsapp-btn" onclick="event.stopPropagation(); openWhatsApp('Kurumsal Paket - Özel Fiyat')">WhatsApp'tan Fiyat Al</button>
+                <button class="whatsapp-btn" onclick="event.stopPropagation(); openInstagram('Kurumsal Paket - Özel Fiyat')">İnstagramdan fiyat al</button>
             </div>
         </div>
 
@@ -1286,12 +1286,14 @@
             cursor.style.top = e.clientY + 'px';
         });
 
-        // WhatsApp yönlendirme fonksiyonu
-        function openWhatsApp(packageName) {
-            const phoneNumber = '905451571642'; // WhatsApp numarası (ülke kodu ile birlikte)
-            const message = encodeURIComponent(`Merhaba, ${packageName} hakkında bilgi almak istiyorum.`);
-            const url = `https://wa.me/${phoneNumber}?text=${message}`;
-            window.open(url, '_blank');
+        // Instagram yönlendirme fonksiyonu (WhatsApp yerine)
+        function openInstagram(packageName) {
+            const instagramProfile = 'https://instagram.com/gokberk_ucr'; // Instagram profil linki
+            // Instagram'da doğrudan mesaj gönderme API'si olmadığı için sadece profile yönlendiriyoruz.
+            // Kullanıcı oradan manuel olarak mesaj atabilir.
+            // İsterseniz, doğrudan bir mesaj metni ile yönlendirme için farklı bir yöntem araştırılabilir,
+            // ancak Instagram'ın resmi bir API'si bulunmamaktadır.
+            window.open(instagramProfile, '_blank');
         }
 
         // Bildirim gösterme fonksiyonu
@@ -1341,8 +1343,7 @@
             const closeModalBtn = document.getElementById('closeModal');
             const generateNumberBtn = document.getElementById('generateNumberBtn');
             const randomNumberDisplay = document.getElementById('randomNumberDisplay');
-            const sendCodeViaWhatsappBtn = document.getElementById('sendCodeViaWhatsapp');
-            // const discountTriggerArea = document.getElementById('discount-trigger-area'); // Gizli tetikleyici alanı KALDIRILDI
+            const sendCodeViaWhatsappBtn = document.getElementById('sendCodeViaWhatsapp'); // Bu buton hala WhatsApp için, eğer Instagram'a çevrilmeyecekse adı değişmeli.
 
             // Fiyatlandırma bölümündeki indirim uygulama elementleri
             const discountCodeInput = document.getElementById('discountCodeInput'); 
@@ -1420,14 +1421,17 @@
             });
 
             // WhatsApp ile indirim kodu gönderme butonu (modal içinde)
+            // Bu kısım hala WhatsApp'a yönlendiriyor. Eğer bu da Instagram'a yönlendirilecekse,
+            // openInstagram fonksiyonu çağrılmalı ve mesaj içeriği buna göre ayarlanmalı.
             sendCodeViaWhatsappBtn.addEventListener('click', () => {
                 const discountCode = randomNumberDisplay.textContent;
                 const placeholderText = randomNumberDisplay.getAttribute('data-placeholder') || "İndirim kodunuz burada görünecek"; // Varsayılan metni al
 
                 if (discountCode && discountCode !== placeholderText) {
-                    showNotification("Kodunuzu Sitemizde Deneyin ve Whatsapp Üzerinden İletişime geçiniz", 'success', 5000); // Yeni mesaj ve süre
+                    // Bu bildirim mesajı Instagram'a yönlendirme için uygun değil.
+                    // Eğer bu buton da Instagram'a yönlendirecekse, aşağıdaki satır değiştirilmeli.
+                    showNotification("Kodunuzu Sitemizde Deneyin ve Whatsapp Üzerinden İletişime geçiniz", 'success', 5000); 
                 } else {
-                    // Henüz kod üretilmemişse kullanıcıya bilgi ver
                     showNotification("Lütfen önce 'İndirim Kodunuzu Alın' butonuna basarak bir kod üretin.", 'error');
                 }
             });
