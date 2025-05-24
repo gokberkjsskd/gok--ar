@@ -40,6 +40,7 @@
             cursor: none; /* Varsayılan imleci tamamen gizle */
             -webkit-font-smoothing: antialiased; /* Metin yumuşatma */
             -moz-osx-font-smoothing: grayscale; /* Metin yumuşatma */
+            padding-top: 50px; /* FOMO banner için üstten boşluk */
         }
 
         /* Etkileşimli öğelerde de varsayılan imleci gizle (ekstra güvenlik) */
@@ -107,7 +108,7 @@
         /* Navigasyon Çubuğu */
         nav {
             position: fixed;
-            top: 0;
+            top: 50px; /* FOMO banner altına yerleştirildi */
             left: 0;
             width: 100%;
             background-color: rgba(0, 0, 0, 0.8); /* Hafif şeffaf arka plan */
@@ -415,15 +416,6 @@
             font-size: 1.05rem; /* Boyut hafif artırıldı */
             flex-grow: 1; /* Özellik listesinin boşluğu doldurmasını sağlar */
             line-height: 1.6; /* Satır yüksekliği artırıldı */
-        }
-
-        .price-features li {
-            margin-bottom: 8px; /* Liste öğeleri arası boşluk azaltıldı */
-            padding-left: 0; /* Nokta için boşluk kaldırıldı */
-            text-indent: 0; /* Metin normal hizalandı */
-            position: relative;
-            word-wrap: break-word; /* Uzun kelimelerin kırılmasını sağlar */
-            overflow-wrap: break-word; /* Daha modern tarayıcılar için */
         }
 
         .price-features li::before {
@@ -815,6 +807,55 @@
             color: #ccc;
         }
 
+        /* FOMO Banner Stilleri */
+        #fomo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px; /* Banner yüksekliği */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            z-index: 10000; /* En üstte olması için */
+            overflow: hidden; /* Taşmayı engelle */
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Hafif gölge */
+            animation: sirenEffect 2s infinite alternate; /* Siren efekti */
+        }
+
+        #fomo-banner.hidden {
+            display: none; /* Süre bitince gizle */
+        }
+
+        #fomo-banner span {
+            margin: 0 5px;
+        }
+
+        /* Sayacın kendi stilini belirginleştir */
+        #countdown {
+            font-size: 1.4rem; /* Biraz daha büyük */
+            font-weight: 900; /* Daha kalın */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.5); /* Daha belirgin beyaz gölge */
+            margin-left: 10px; /* Mesajdan biraz daha uzak */
+            letter-spacing: 1px; /* Harfler arası boşluk */
+        }
+
+        /* Siren Efekti Animasyonu: Hem arka plan hem yazı rengini değiştirir */
+        @keyframes sirenEffect {
+            0% {
+                background-color: #0a0a0a; /* Siyah arka plan */
+                color: var(--accent-color); /* Mavi metin */
+            }
+            100% {
+                background-color: var(--accent-color); /* Mavi arka plan */
+                color: #0a0a0a; /* Siyah metin */
+            }
+        }
+
+
         /* Responsive Tasarım */
 
         /* Büyük Ekranlar (1200px ve üzeri) - Varsayılan stiller zaten bu aralık için iyi */
@@ -848,6 +889,12 @@
             }
             .discount-section-group {
                 max-width: 350px;
+            }
+            #fomo-banner {
+                font-size: 1.1rem;
+            }
+            #countdown {
+                font-size: 1.3rem;
             }
         }
 
@@ -932,9 +979,6 @@
                 max-width: 300px;
                 padding: 20px;
             }
-            .discount-section-group h3 {
-                font-size: 1.5rem;
-            }
             .discount-input-group {
                 flex-direction: column;
                 gap: 10px;
@@ -953,6 +997,19 @@
                 min-width: 200px;
                 max-width: 300px;
                 padding: 12px 15px;
+            }
+            #fomo-banner {
+                font-size: 1rem;
+                height: 45px;
+            }
+            #countdown {
+                font-size: 1.2rem;
+            }
+            body {
+                padding-top: 45px; /* FOMO banner için üstten boşluk */
+            }
+            nav {
+                top: 45px; /* FOMO banner altına yerleştirildi */
             }
         }
 
@@ -979,7 +1036,7 @@
             }
             #intro p.slogan {
                 font-size: 1rem;
-                margin-bottom: 25px;
+                padding: 0 10px;
             }
             #intro img {
                 max-width: 200px;
@@ -1008,7 +1065,7 @@
                 right: 10px;
             }
             .price-title {
-                font-size: 1.6rem;
+                font-size: 1.4rem;
             }
             .price-amount {
                 font-size: 1.8rem;
@@ -1058,6 +1115,19 @@
                 right: 20px;
                 left: 20px;
                 max-width: unset;
+            }
+            #fomo-banner {
+                font-size: 0.9rem;
+                height: 40px;
+            }
+            #countdown {
+                font-size: 1.1rem;
+            }
+            body {
+                padding-top: 40px; /* FOMO banner için üstten boşluk */
+            }
+            nav {
+                top: 40px; /* FOMO banner altına yerleştirildi */
             }
         }
 
@@ -1138,10 +1208,28 @@
                 left: 20px;
                 max-width: unset;
             }
+            #fomo-banner {
+                font-size: 0.8rem;
+                height: 35px;
+            }
+            #countdown {
+                font-size: 1rem;
+            }
+            body {
+                padding-top: 35px; /* FOMO banner için üstten boşluk */
+            }
+            nav {
+                top: 35px; /* FOMO banner altına yerleştirildi */
+            }
         }
     </style>
 </head>
 <body>
+
+    <div id="fomo-banner">
+        <span id="fomo-message">Son Fırsat! Kalan Süre:</span>
+        <span id="countdown"></span>
+    </div>
 
     <div id="custom-cursor"></div>
 
@@ -1332,7 +1420,7 @@
             const closeModalBtn = document.getElementById('closeModal');
             const generateNumberBtn = document.getElementById('generateNumberBtn');
             const randomNumberDisplay = document.getElementById('randomNumberDisplay');
-            const sendCodeViaInstagramBtn = document.getElementById('sendCodeViaInstagram'); // Değişken adı güncellendi
+            const sendCodeViaInstagramBtn = document.getElementById('sendCodeViaInstagram'); 
 
             // Fiyatlandırma bölümündeki indirim uygulama elementleri
             const discountCodeInput = document.getElementById('discountCodeInput'); 
@@ -1410,7 +1498,7 @@
             });
 
             // Instagram ile indirim kodu gönderme butonu (modal içinde)
-            sendCodeViaInstagramBtn.addEventListener('click', () => { // Değişken adı güncellendi
+            sendCodeViaInstagramBtn.addEventListener('click', () => { 
                 const discountCode = randomNumberDisplay.textContent;
                 const placeholderText = randomNumberDisplay.getAttribute('data-placeholder') || "İndirim kodunuz burada görünecek"; // Varsayılan metni al
 
@@ -1424,6 +1512,49 @@
 
             // randomNumberDisplay için varsayılan metni data özniteliği olarak ayarla
             randomNumberDisplay.setAttribute('data-placeholder', randomNumberDisplay.textContent);
+
+
+            // --- BAŞLANGIÇ: FOMO Sayacı Mantığı ---
+            const fomoBanner = document.getElementById('fomo-banner');
+            const countdownDisplay = document.getElementById('countdown');
+            const fomoMessage = document.getElementById('fomo-message');
+
+            // Sayaç bitiş zamanını her sayfa açıldığında rastgele olarak başlat
+            // Saat 12 olarak sabit, dakika ve saniye rastgele olacak.
+            const fixedHours = 12;
+            const randomMinutes = Math.floor(Math.random() * 60); // 0 ile 59 arası rastgele dakika
+            const randomSeconds = Math.floor(Math.random() * 60); // 0 ile 59 arası rastgele saniye
+            
+            const now = new Date().getTime();
+            // Bitiş zamanı: Şu anki zaman + sabit 12 saat + rastgele dakika + rastgele saniye
+            const endTime = now + (fixedHours * 60 * 60 * 1000) + (randomMinutes * 60 * 1000) + (randomSeconds * 1000);
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    fomoBanner.classList.add('hidden'); // Sayacı gizle
+                    fomoMessage.textContent = "Fırsat sona erdi!";
+                    countdownDisplay.textContent = "";
+                    return;
+                }
+
+                // Saat her zaman 12 olarak gösterilecek, ancak iç hesaplamada kalan saat kullanılacak
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownDisplay.textContent = 
+                    `${String(fixedHours).padStart(2, '0')}s ${String(minutes).padStart(2, '0')}d ${String(seconds).padStart(2, '0')}sn`;
+            }
+
+            // Sayacı her saniye güncelle
+            const countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown(); // Sayfa yüklendiğinde ilk güncellemeyi yap
+
+            // --- SON: FOMO Sayacı Mantığı ---
         });
     </script>
 </body>
