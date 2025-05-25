@@ -634,6 +634,15 @@
             box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
         }
 
+        /* Buton devre dışı bırakıldığında stil */
+        .generate-number-btn:disabled {
+            background-color: #555; /* Daha koyu gri */
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+            opacity: 0.7;
+        }
+
         .info-icon-btn {
             background: none;
             border: none;
@@ -1466,6 +1475,10 @@
                 generatedDiscountCode = randomNumber.toString(); // Üretilen kodu global değişkende sakla
                 randomNumberDisplay.textContent = generatedDiscountCode;
                 showNotification("İndirim kodunuz başarıyla oluşturuldu!", 'success'); // Başarı bildirimi
+                
+                // Butonu devre dışı bırak
+                generateNumberBtn.disabled = true;
+                // İsteğe bağlı olarak butonun stilini de değiştirebilirsiniz (CSS'te :disabled pseudo-class'ı kullanıldı)
             });
 
             // İndirim uygulama butonu (fiyatlandırma bölümünde)
