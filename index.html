@@ -887,8 +887,8 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Manussa Sites Toggle Styling */
-        #manussa-sites-toggle {
+        /* Genel Toggle Styling for all portfolio sections */
+        .portfolio-toggle {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -905,15 +905,16 @@
             margin-right: auto;
             margin-bottom: 40px; /* Toggle'ın altındaki boşluk */
             user-select: none;
+            cursor: pointer; /* Cursor eklendi */
         }
 
-        #manussa-sites-toggle:hover {
+        .portfolio-toggle:hover {
             transform: translateY(-5px) scale(1.01);
             box-shadow: 0 0 30px rgba(0, 123, 255, 0.6);
             background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
         }
 
-        #manussa-sites-toggle h3 {
+        .portfolio-toggle h3 {
             font-size: 2.5rem; /* Toggle başlığı için daha büyük font boyutu */
             font-weight: 900;
             letter-spacing: 2px;
@@ -924,30 +925,30 @@
             background: none; /* Önceki gradyanı kaldırır */
         }
 
-        #manussa-sites-toggle p {
+        .portfolio-toggle p {
             font-size: 1.1rem;
             color: #bbb;
             margin-bottom: 0;
             font-style: italic;
         }
 
-        .arrow-icon {
+        .portfolio-toggle .arrow-icon {
             width: 28px;
             height: 28px;
             fill: var(--text-color);
             transition: transform 0.3s ease, fill 0.3s ease;
         }
 
-        #manussa-sites-toggle:hover .arrow-icon {
+        .portfolio-toggle:hover .arrow-icon {
             fill: #fff;
         }
 
-        .arrow-icon.rotated {
+        .portfolio-toggle .arrow-icon.rotated {
             transform: rotate(90deg); /* Genişletildiğinde oku döndür */
         }
 
-        /* MANUSSA Portfolio Container */
-        #manussa-portfolio-container {
+        /* Genel Portfolio Container Wrapper */
+        .portfolio-container-wrapper {
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
             gap: 30px;
@@ -961,13 +962,13 @@
             padding-top: 0; /* Daraltıldığında boşluk yok */
         }
 
-        #manussa-portfolio-container.expanded {
+        .portfolio-container-wrapper.expanded {
             max-height: 1000px; /* İçerik için yeterince yüksek bir değer */
             opacity: 1;
             padding-top: 30px; /* Genişletildiğinde biraz boşluk ekle */
         }
 
-        /* Ortak portfolio grid stilini burada tutuyoruz, ancak manussa-portfolio-container içindeki item'lar için özelleştireceğiz */
+        /* Ortak portfolio grid stilini burada tutuyoruz, ancak her bir container içindeki item'lar için özelleştireceğiz */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -975,11 +976,11 @@
             max-width: 1200px;
             width: 90%;
             justify-content: center;
-            margin-top: 50px; /* Diğer portföy öğeleri için genel boşluk */
+            /* margin-top: 50px; removed as now wrappers have their own padding-top */
         }
 
-        /* Manussa'ya özgü portfolio-item stilleri */
-        #manussa-portfolio-container .portfolio-item {
+        /* Genel portfolio-item stilleri */
+        .portfolio-item {
             min-height: 480px; /* Kartları biraz daha uzun ve orantılı yapar */
             padding: 0;
             display: flex;
@@ -987,11 +988,12 @@
             justify-content: space-between;
             background: linear-gradient(160deg, #181818, #0c0c0c); /* Daha yumuşak gradyan */
             border: 1px solid rgba(255, 255, 255, 0.08); /* Daha ince kenarlık */
+            border-radius: var(--border-radius); /* Köşe yuvarlama */
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Daha belirgin ama yumuşak gölge */
             transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
         }
 
-        #manussa-portfolio-container .portfolio-item:hover {
+        .portfolio-item:hover {
             transform: translateY(-12px) scale(1.02); /* Hafif yukarı ve büyütme */
             box-shadow: 0 10px 35px rgba(0, 123, 255, 0.7); /* Daha parlak, yaygın gölge */
             border-color: var(--accent-color); /* Vurgu rengiyle kenarlık */
@@ -1010,7 +1012,7 @@
             border-top-right-radius: var(--border-radius);
         }
 
-        #manussa-portfolio-container .portfolio-item img {
+        .portfolio-item img {
             width: 100%;
             height: 100%; /* Kapsayıcı div'ini doldurur */
             object-fit: cover;
@@ -1018,11 +1020,11 @@
             transition: transform 0.3s ease;
         }
 
-        #manussa-portfolio-container .portfolio-item:hover img {
+        .portfolio-item:hover img {
             transform: scale(1.05); /* Hover'da hafif büyütme efekti */
         }
 
-        #manussa-portfolio-container .portfolio-content {
+        .portfolio-content {
             padding: 25px;
             flex-grow: 1;
             display: flex;
@@ -1032,14 +1034,14 @@
             text-align: center; /* Metinleri de ortala */
         }
 
-        #manussa-portfolio-container .portfolio-content h3 {
+        .portfolio-content h3 {
             font-size: 2.1rem; /* Başlık font boyutu artırıldı */
             margin-bottom: 10px; /* Başlık ve paragraf arası boşluk azaltıldı */
             color: var(--accent-color);
             letter-spacing: 1px; /* Harf aralığı eklendi */
         }
 
-        #manussa-portfolio-container .portfolio-content p {
+        .portfolio-content p {
             font-size: 1.05rem;
             color: #ccc; /* Metin rengi biraz daha açık */
             line-height: 1.6;
@@ -1047,7 +1049,7 @@
             max-width: 90%; /* Metnin çok yayılmasını engelle */
         }
 
-        #manussa-portfolio-container .portfolio-link {
+        .portfolio-link {
             padding: 12px 28px; /* Buton boyutları artırıldı */
             font-size: 1rem; /* Buton font boyutu artırıldı */
             font-weight: 700; /* Daha kalın buton metni */
@@ -1058,7 +1060,7 @@
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, text-shadow 0.3s ease;
         }
 
-        #manussa-portfolio-container .portfolio-link:hover {
+        .portfolio-link:hover {
             background-color: #006ee6; /* Hafif koyu vurgu rengi */
             transform: translateY(-3px); /* Daha belirgin yukarı hareket */
             box-shadow: 0 0 20px var(--accent-color), 0 0 35px var(--accent-color), 0 0 60px var(--accent-color), inset 0 0 20px var(--accent-color);
@@ -1106,23 +1108,23 @@
             #countdown {
                 font-size: 1.3rem;
             }
-            /* Manussa Sites Toggle Responsiveness */
-            #manussa-sites-toggle h3 {
+            /* Portfolio Toggle Responsiveness */
+            .portfolio-toggle h3 {
                 font-size: 2.2rem;
             }
-            #manussa-sites-toggle p {
+            .portfolio-toggle p {
                 font-size: 1rem;
             }
-            #manussa-portfolio-container {
+            .portfolio-container-wrapper {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Daha dar kalır */
             }
             .portfolio-image-header {
                 height: 200px; /* Resim yüksekliğini duyarlı hale getir */
             }
-            #manussa-portfolio-container .portfolio-content h3 {
+            .portfolio-content h3 {
                 font-size: 1.6rem;
             }
-            #manussa-portfolio-container .portfolio-content p {
+            .portfolio-content p {
                 font-size: 0.95rem;
             }
         }
@@ -1243,23 +1245,23 @@
             nav {
                 top: 45px; /* FOMO banner altına yerleştirildi */
             }
-            /* Manussa Sites Toggle Responsiveness */
-            #manussa-sites-toggle h3 {
+            /* Portfolio Toggle Responsiveness */
+            .portfolio-toggle h3 {
                 font-size: 1.8rem;
             }
-            #manussa-sites-toggle p {
+            .portfolio-toggle p {
                 font-size: 0.8rem;
             }
-            #manussa-portfolio-container {
+            .portfolio-container-wrapper {
                 grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Daha dar kalır */
             }
             .portfolio-image-header {
-                height: 200px; /* Resim yüksekliğini duyarlı hale getir */
+                height: 180px; /* Resim yüksekliğini duyarlı hale getir */
             }
-            #manussa-portfolio-container .portfolio-content h3 {
+            .portfolio-content h3 {
                 font-size: 1.4rem;
             }
-            #manussa-portfolio-container .portfolio-content p {
+            .portfolio-content p {
                 font-size: 0.95rem;
             }
         }
@@ -1380,14 +1382,14 @@
             nav {
                 top: 40px; /* FOMO banner altına yerleştirildi */
             }
-            /* Manussa Sites Toggle Responsiveness */
-            #manussa-sites-toggle h3 {
+            /* Portfolio Toggle Responsiveness */
+            .portfolio-toggle h3 {
                 font-size: 1.8rem;
             }
-            #manussa-sites-toggle p {
+            .portfolio-toggle p {
                 font-size: 0.8rem;
             }
-            #manussa-portfolio-container {
+            .portfolio-container-wrapper {
                 grid-template-columns: 1fr; /* Tek sütun */
                 max-width: 380px;
                 width: 95%;
@@ -1395,10 +1397,10 @@
             .portfolio-image-header {
                 height: 180px; /* Resim yüksekliğini duyarlı hale getir */
             }
-            #manussa-portfolio-container .portfolio-content h3 {
+            .portfolio-content h3 {
                 font-size: 1.6rem;
             }
-            #manussa-portfolio-container .portfolio-content p {
+            .portfolio-content p {
                 font-size: 0.95rem;
             }
         }
@@ -1573,7 +1575,7 @@
     <section id="portfolio">
         <h2>Örnek Web Sitelerimiz</h2>
         <!-- MANUSSA Siteleri Başlığı ve Tıklanabilir Alan -->
-        <div class="relative w-full max-w-xl mx-auto mb-10 text-center cursor-pointer" id="manussa-sites-toggle">
+        <div class="relative w-full max-w-xl mx-auto mb-10 text-center portfolio-toggle" id="manussa-sites-toggle">
             <h3>MANUSSA Siteleri</h3>
             <p>Eşsiz projelerimizi keşfedin</p>
             <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1582,7 +1584,7 @@
         </div>
 
         <!-- MANUSSA Örnek Kartları Konteyneri -->
-        <div id="manussa-portfolio-container" class="portfolio-grid">
+        <div id="manussa-portfolio-container" class="portfolio-container-wrapper portfolio-grid">
             <!-- Manussa Örnek Kart 1 (Manussa) -->
             <div class="portfolio-item">
                 <div class="portfolio-image-header">
@@ -1603,6 +1605,41 @@
                     <h3>Manussa House</h3>
                     <p>Ev konseptli şık bir işletme için tasarlanmış özel web sitesi.</p>
                     <a href="https://manussa.vercel.app" target="_blank" class="portfolio-link">İncele</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- DİĞER SİTELER Başlığı ve Tıklanabilir Alan -->
+        <div class="relative w-full max-w-xl mx-auto mb-10 text-center portfolio-toggle" id="other-sites-toggle">
+            <h3>Diğer Sitelerimiz</h3>
+            <p>Çeşitli sektörlerdeki projelerimiz</p>
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <!-- DİĞER SİTELER Örnek Kartları Konteyneri -->
+        <div id="other-portfolio-container" class="portfolio-container-wrapper portfolio-grid">
+            <!-- Balıkçı Sitesi Örnek Kart -->
+            <div class="portfolio-item">
+                <div class="portfolio-image-header">
+                    <img src="https://placehold.co/600x400/007bff/ffffff?text=Balıkçı+Sitesi" alt="Balıkçı Sitesi Örneği" onerror="this.onerror=null;this.src='https://placehold.co/600x400/007bff/ffffff?text=Resim+Yüklenemedi';" />
+                </div>
+                <div class="portfolio-content">
+                    <h3>Balıkçı Sitesi</h3>
+                    <p>Deniz ürünleri satışına yönelik modern ve kullanışlı bir e-ticaret platformu.</p>
+                    <a href="https://balikci.vercel.app/" target="_blank" class="portfolio-link">İncele</a>
+                </div>
+            </div>
+            <!-- Araç Galeri Sitesi Örnek Kart -->
+            <div class="portfolio-item">
+                <div class="portfolio-image-header">
+                    <img src="https://placehold.co/600x400/007bff/ffffff?text=Araç+Galeri" alt="Araç Galeri Sitesi Örneği" onerror="this.onerror=null;this.src='https://placehold.co/600x400/007bff/ffffff?text=Resim+Yüklenemedi';" />
+                </div>
+                <div class="portfolio-content">
+                    <h3>Araç Galeri Sitesi</h3>
+                    <p>Araç satış galerileri için özel olarak tasarlanmış, şık bir web sitesi.</p>
+                    <a href="https://galeri-phi.vercel.app/" target="_blank" class="portfolio-link">İncele</a>
                 </div>
             </div>
         </div>
@@ -1874,20 +1911,28 @@
 
             // --- SON: FOMO Sayacı Mantığı ---
 
-            // MANUSSA Siteleri Toggle Mantığı
-            const manussaSitesToggle = document.getElementById('manussa-sites-toggle');
-            const manussaPortfolioContainer = document.getElementById('manussa-portfolio-container');
-            const arrowIcon = manussaSitesToggle.querySelector('.arrow-icon');
+            // Portfolio Toggle Mantığı için fonksiyon
+            function setupPortfolioToggle(toggleId, containerId) {
+                const toggle = document.getElementById(toggleId);
+                const container = document.getElementById(containerId);
+                const arrowIcon = toggle.querySelector('.arrow-icon');
 
-            // Başlangıçta gizli tut
-            manussaPortfolioContainer.classList.add('collapsed'); 
-            manussaPortfolioContainer.classList.remove('expanded');
+                // Başlangıçta gizli tut
+                container.classList.add('collapsed'); 
+                container.classList.remove('expanded');
 
-            manussaSitesToggle.addEventListener('click', () => {
-                manussaPortfolioContainer.classList.toggle('expanded');
-                manussaPortfolioContainer.classList.toggle('collapsed');
-                arrowIcon.classList.toggle('rotated');
-            });
+                toggle.addEventListener('click', () => {
+                    container.classList.toggle('expanded');
+                    container.classList.toggle('collapsed');
+                    arrowIcon.classList.toggle('rotated');
+                });
+            }
+
+            // Mevcut Manussa Siteleri için toggle'ı kur
+            setupPortfolioToggle('manussa-sites-toggle', 'manussa-portfolio-container');
+
+            // Yeni Diğer Siteler için toggle'ı kur
+            setupPortfolioToggle('other-sites-toggle', 'other-portfolio-container');
         });
     </script>
 </body>
